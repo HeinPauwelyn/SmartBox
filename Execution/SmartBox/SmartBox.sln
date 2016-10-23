@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartBox.XamarinApp", "SmartBox.XamarinApp\SmartBox.XamarinApp.csproj", "{3E42AEBB-45AA-4FF1-AC72-6DE36D4BA3F6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartBox.WebJob", "SmartBox.WebJob\SmartBox.WebJob.csproj", "{DB8DE16F-6F98-497B-949B-8CDD93ED71E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartBox.ASP", "SmartBox.ASP\SmartBox.ASP.csproj", "{C57E7D7E-2258-4C30-98B4-6A4DD79C619D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartBox.Xamarin", "SmartBox.Xamarin\SmartBox.Xamarin.csproj", "{83337F76-2D16-4145-883F-EE5F742D0261}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3E42AEBB-45AA-4FF1-AC72-6DE36D4BA3F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E42AEBB-45AA-4FF1-AC72-6DE36D4BA3F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E42AEBB-45AA-4FF1-AC72-6DE36D4BA3F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E42AEBB-45AA-4FF1-AC72-6DE36D4BA3F6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DB8DE16F-6F98-497B-949B-8CDD93ED71E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB8DE16F-6F98-497B-949B-8CDD93ED71E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB8DE16F-6F98-497B-949B-8CDD93ED71E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,12 @@ Global
 		{C57E7D7E-2258-4C30-98B4-6A4DD79C619D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C57E7D7E-2258-4C30-98B4-6A4DD79C619D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C57E7D7E-2258-4C30-98B4-6A4DD79C619D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83337F76-2D16-4145-883F-EE5F742D0261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83337F76-2D16-4145-883F-EE5F742D0261}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83337F76-2D16-4145-883F-EE5F742D0261}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{83337F76-2D16-4145-883F-EE5F742D0261}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83337F76-2D16-4145-883F-EE5F742D0261}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83337F76-2D16-4145-883F-EE5F742D0261}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
