@@ -19,6 +19,15 @@ Identiek als oplossing één maar zonder IoT Hub. Wordt eventueel iets moeilijke
 
 [![][1]][1]
 
+## Oplossing drie
+
+Na overleg met docenten is het uitengelijk deze oplossing geworden. De webjob werd vervangen door een WebService en er is nu ook communicatie mogelijk tussen de applicatie en de smart box via bluetooth. De smart box gaat zijn locatie doorsturen via het LoRa netwerk naar de IoT hub. Deze wordt daarna uitgelezen door een web service. 
+
+Daarnaast houd de box de GPS lokatie van zijn bestemming bij. Als deze matcht met de huidige lokatie, kan hij geopend worden via een code die je verzend via bluetooth.
+
+[![][3]][3]
+
 
 [1]: https://raw.githubusercontent.com/HeinPauwelyn/SmartBox/master/Schemas/Smartbox-01.png
 [2]: https://raw.githubusercontent.com/HeinPauwelyn/SmartBox/master/Schemas/Smartbox-02.png
+[3]: https://raw.githubusercontent.com/HeinPauwelyn/SmartBox/master/Schemas/Smartbox-03.png
