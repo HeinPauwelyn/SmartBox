@@ -16,11 +16,11 @@ Smart box which make it possible to send "sensitive documents". We should be abl
 ## Software technologies
 
 - Cloud platform
-  - [x] [Azure][5]
+  - [ ] [Azure][5]
   - [ ] [Amazon AWS][6]
 - Backend
-  - [x] [ASP.NET MVC][7]
-  - [ ] [Node.JS][8]
+  - [ ] [ASP.NET MVC][7]
+  - [x] [Node.JS][8]
 - Mobile App
   - [x] [Xamarin][9]
 
