@@ -16,5 +16,5 @@ while counter <= 100:
     coor = Coordinates(text)
 
     print "lat: " + str(coor.lat)
-    print "long: " + str(coor.long)
+    print "lon: " + str(coor.lon)
     counter += 1
