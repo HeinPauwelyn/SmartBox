@@ -334,7 +334,7 @@ void sendLightSensor(){// 6
   
   int val = analogRead(0xA0);
   
-  Serial.println("ingelezen licht waarde: " + String(val));
+  //Serial.println("ingelezen licht waarde: " + String(val));
   LightSensor fSens((float) val);
   dumpSendResult(fSens);
 }

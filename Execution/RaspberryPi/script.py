@@ -12,9 +12,15 @@ class Coordinates(object):
 
 while counter <= 100:
     text = ser.readline()
+    print text
 
-    coor = Coordinates(text)
+    try:
+        coor = Coordinates(text)
+        
+        print "lat: " + str(coor.lat)
+        print "lon: " + str(coor.lon)
+    
+    except ValueError:
+        print "Error in code"
 
-    print "lat: " + str(coor.lat)
-    print "lon: " + str(coor.lon)
     counter += 1
