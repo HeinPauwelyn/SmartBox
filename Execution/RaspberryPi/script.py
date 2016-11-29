@@ -4,7 +4,6 @@ import json
 ser = serial.Serial('/dev/ttyUSB0', 9600)
 counter = 0
 
-
 class Coordinates(object):
 
     def __init__(self, j):

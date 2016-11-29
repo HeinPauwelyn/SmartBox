@@ -2,6 +2,7 @@
 /* Declaraties en imports         */
 /**********************************/
 
+#include "TinyGPS.h"
 #include "keys.h"
 #include "device.h"
 #include "LowPower.h"
@@ -9,8 +10,7 @@
 #include "Sensor.h"
 #include "sensor.h"
 #include "LoRaModemMicrochip.h"
-#include "SoftwareSerial.h"
-#include "TinyGPS.h"
+#include <SoftwareSerial.h>
 #include <avr/wdt.h>
 #include <avr/sleep.h>
 
@@ -35,13 +35,15 @@ volatile byte sensorSelect = 0;
 
 unsigned long new_value = 0;
 bool connection = true;
+int value = 0;
 
 LoRaModemMicrochip modem(&MODEM_SERIAL, &debugSerial);
 Device libTest(&modem, &debugSerial);
 GPSSensor gpsSensor;
 EnCoSensor enCoSensor;
-SoftwareSerial gpsSerial(2, 3);
-TinyGPS gps;
+SoftwareSerial SoftSerial(4, 5);
+unsigned char buffer[64];
+int count = 0;
 
 /**********************************/
 /* Sensoren                       */
@@ -69,20 +71,71 @@ void sendBatteryLevel() {
 
 void sendGPSData() {
     bool sendResult = false;
-    long lat, lon, alt;
+    float lat, lon, alt;
     
-    if (gpsSerial.available() && gps.encode(gpsSerial.read())) {
-        gps.get_position(&lat, &lon);
-
-        gpsSensor.setLongitude(lon);
-        gpsSensor.setLatitude(lat);
-        gpsSensor.setAltitude(alt);
-        alt += 3.75;
-        
-        Serial.println("{\"lon\": " + String(lon) + ", \"lat\": " + String(lat) + "}");
-
-        sendResult = libTest.sendSafe(gpsSensor);
+    if (Serial.available() > 0)
+    {
+        handleInput();
     }
+
+    if (SoftSerial.available())
+    {
+        while (SoftSerial.available())
+        {
+            buffer[count++] = SoftSerial.read();
+            if (count == 64) {
+                break;
+            }
+        }
+        
+        Serial.write(buffer,count);
+        clearBufferArray();
+        count = 0;
+    }
+
+    if (Serial.available()) {
+        SoftSerial.write(Serial.read());
+    }
+}
+
+void clearBufferArray()
+{
+    for (int i = 0; i < count; i++)
+    {
+        buffer[i] = NULL;
+    }
+}
+
+void handleInput()
+{
+    //Get the input string
+    String input = Serial.readString();
+
+    //Remove any whitespace or CR/LF
+    input.trim();
+
+    //Echo the input
+    Serial.println("Command: " + input + " received");
+
+    //Process the input
+    if (input == "add")
+    {
+        Serial.println("Adding 1 to the value");
+        value++;
+    }
+    else if (input == "sub")
+    {
+        Serial.println("Subtracting 1 from the value");
+        value--;
+    }
+    else
+    {
+        Serial.println("Unknown command: " + input);
+    }
+
+    //Echo the changes
+    Serial.print("The current value is: ");
+    Serial.println(value);
 }
 
 /**********************************/
@@ -90,18 +143,23 @@ void sendGPSData() {
 /**********************************/
 
 void setup() {
+
+    SoftSerial.begin(SERIAL_BAUD);
+    Serial.begin(SERIAL_BAUD);
+    
     #ifdef PIN_PWR_RN2483
         pinMode(PIN_PWR_RN2483, OUTPUT);
         digitalWrite(PIN_PWR_RN2483, HIGH);
     #endif
     
-    debugSerial.begin(SERIAL_BAUD);
+    //Serial.begin(SERIAL_BAUD);
+    //debugSerial.begin(SERIAL_BAUD);
     MODEM_SERIAL.begin(modem.getDefaultBaudRate());
     
     pinMode(2, INPUT_PULLUP);
 
-    Serial.begin(9600);
-    gpsSerial.begin(9600);
+    //Serial.begin(SERIAL_BAUD);
+    //gpsSerial.begin(SERIAL_BAUD);
 }
 
 void loop() {
@@ -143,8 +201,6 @@ void loop() {
 /**********************************/
 /* Andere methodes                */
 /**********************************/
-
-
 
 void wakeUP_RN2483() {
     MODEM_SERIAL.end();
