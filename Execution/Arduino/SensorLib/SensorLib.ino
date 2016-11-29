@@ -144,6 +144,8 @@ void loop() {
 /* Andere methodes                */
 /**********************************/
 
+
+
 void wakeUP_RN2483() {
     MODEM_SERIAL.end();
     pinMode(PIN_TX_RN2483, OUTPUT);
