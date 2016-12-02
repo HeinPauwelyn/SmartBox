@@ -69,8 +69,6 @@ void sendBatteryLevel() {
     dumpSendResult(iSens);
 }
 
-#define INPUT_SIZE 30
-
 void sendGPSData() {
     bool gotGPGGA = false;
     int teller = 0;

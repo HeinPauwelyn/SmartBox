@@ -34,8 +34,10 @@ void loop()
  
  
     }
-    if (Serial.available())                         // if data is available on hardware serial port ==> data is coming from PC or notebook
-    SoftSerial.write(Serial.read());                // write it to the SoftSerial shield
+    
+    if (Serial.available()) {                       // if data is available on hardware serial port ==> data is coming from PC or notebook
+        SoftSerial.write(Serial.read());            // write it to the SoftSerial shield
+    }
 }
  
 void clearBufferArray()                             // function to clear buffer array

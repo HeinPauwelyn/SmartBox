@@ -16,8 +16,9 @@ while counter <= 100:
     try:
         coor = Coordinates(text)
         
-        print "lat: " + str(coor.lat)
-        print "lon: " + str(coor.lon)
+        print "uur: " + str(coor.uur)
+        print "lat: " + str(coor.lat) + str(coor.latChar)
+        print "lon: " + str(coor.lon) + str(coor.lonChar)
     
     except ValueError:
         print "Error in code"
