@@ -69,32 +69,66 @@ void sendBatteryLevel() {
     dumpSendResult(iSens);
 }
 
+#define INPUT_SIZE 30
+
 void sendGPSData() {
-    bool sendResult = false;
-    float lat, lon, alt;
-    
-    if (Serial.available() > 0)
-    {
-        handleInput();
-    }
+    bool gotGPGGA = false;
+    int teller = 0;
+    String text = "";
+    String json = "";
 
     if (SoftSerial.available())
     {
         while (SoftSerial.available())
         {
-            buffer[count++] = SoftSerial.read();
+            char read = SoftSerial.read();
+
+            buffer[count++] = read;
+
+            if (String(read) == ",") {
+
+                if (text == "$GPGGA") {
+                    gotGPGGA = true;
+                }
+
+                if (gotGPGGA) {
+                    switch (teller) {
+                        case 1:
+                            json += "{ \"uur\": \"" + text.substring(0, 2) + ":" + text.substring(2, 4) + ":" + text.substring(4, 6) + "\", ";
+                            break;
+                        case 2:
+                            json += "\"lat\": \"" + text + "\", ";
+                            break;
+                        case 3:
+                            json += "\"latChar\": \"" + text + "\", ";
+                            break;
+                        case 4:
+                            json += "\"lon\": \"" + text + "\", ";
+                            break;
+                        case 5:
+                            json += "\"lonChar\": \"" + text + "\" }";
+                            break;
+                    }
+
+                    teller += 1;
+                }
+                text = "";
+            }
+            else {
+                text += read;
+            }
+
             if (count == 64) {
+                if (json != "") {
+                    Serial.println(json);
+                }
                 break;
             }
         }
-        
-        Serial.write(buffer,count);
+
+        delay(2000);
         clearBufferArray();
         count = 0;
-    }
-
-    if (Serial.available()) {
-        SoftSerial.write(Serial.read());
     }
 }
 
