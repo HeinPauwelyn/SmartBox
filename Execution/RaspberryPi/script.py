@@ -15,11 +15,17 @@ class Coordinates(object):
     
 while running:
     try:
-        coor = Coordinates(ser.readline())
+        text = ser.readline()
+        coor = Coordinates(text)
         
-        print "uur: " + str(coor.uur)
-        print "lat: " + str(coor.lat) + str(coor.latChar)
-        print "lon: " + str(coor.lon) + str(coor.lonChar)
+        # print "uur: " + str(coor.uur)
+        # print "lat: " + str(coor.lat) + str(coor.latChar)
+        # print "lon: " + str(coor.lon) + str(coor.lonChar)
+
+        with open('locations.csv', 'a') as file:
+            file.write(coor.uur + "," + str(coor.lat) + coor.latChar + "," + coor.lon + coor.lonChar + "\r\n")
+        
+        print "data printed"
 
     except SerialException:
         running = False

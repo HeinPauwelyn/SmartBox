@@ -88,14 +88,14 @@ void sendGPSData() {
                             json += "{ \"uur\": \"" + uur + "\", ";
                             break;
                         case 2:
-                            lat = text.toFloat();
+                            //lat = text.toFloat();
                             json += "\"lat\": \"" + text + "\", ";
                             break;
                         case 3:
                             json += "\"latChar\": \"" + text + "\", ";
                             break;
                         case 4:
-                            lon = text.toFloat();
+                            //lon = text.toFloat();
                             json += "\"lon\": \"" + text + "\", ";
                             break;
                         case 5:
