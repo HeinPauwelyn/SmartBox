@@ -1,31 +1,28 @@
 import serial
 import json
 
-ser = serial.Serial('/dev/ttyUSB0', 9600)
-counter = 0
+running = True;
+
+try:
+    ser = serial.Serial('/dev/ttyUSB0', 9600)
+except SerialException:
+    print "ttyUSB0 not found!"
 
 class Coordinates(object):
 
     def __init__(self, j):
         self.__dict__ = json.loads(j)
     
-    def decdeg2dms(dd):
-        mnt,sec = divmod(dd*3600,60)
-        deg,mnt = divmod(mnt,60)
-        return deg,mnt,sec
-
-while counter <= 100:
-    text = ser.readline()
-    print text
-
+while running:
     try:
-        coor = Coordinates(text)
+        coor = Coordinates(ser.readline())
         
         print "uur: " + str(coor.uur)
         print "lat: " + str(coor.lat) + str(coor.latChar)
         print "lon: " + str(coor.lon) + str(coor.lonChar)
-    
+
+    except SerialException:
+        running = False
+
     except ValueError:
         print "Error in code"
-
-    counter += 1

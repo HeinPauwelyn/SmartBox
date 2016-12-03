@@ -2,7 +2,6 @@
 /* Declaraties en imports         */
 /**********************************/
 
-#include "TinyGPS.h"
 #include "keys.h"
 #include "device.h"
 #include "LowPower.h"
@@ -51,17 +50,11 @@ int count = 0;
 
 void sendSensor(String sensorSelect = "gps") {
     if (sensorSelect == "gps") {
-        sendGPSSensor();
+        sendGPSData();
     }
     else if (sensorSelect == "battery") {
         sendBatteryLevel();
     }
-}
-
-void sendGPSSensor() {
-    GPSSensor gpsSens(4.3, 51.222, 15.5, 0);
-
-    dumpSendResult(gpsSens);
 }
 
 void sendBatteryLevel() {
@@ -72,13 +65,12 @@ void sendBatteryLevel() {
 void sendGPSData() {
     bool gotGPGGA = false;
     int teller = 0;
-    String text = "";
-    String json = "";
+    String text, json, uur;
+    float lon, lat, alt;
 
-    if (SoftSerial.available())
-    {
-        while (SoftSerial.available())
-        {
+    if (SoftSerial.available()) {
+
+        while (SoftSerial.available()) {
             char read = SoftSerial.read();
 
             buffer[count++] = read;
@@ -92,15 +84,18 @@ void sendGPSData() {
                 if (gotGPGGA) {
                     switch (teller) {
                         case 1:
-                            json += "{ \"uur\": \"" + text.substring(0, 2) + ":" + text.substring(2, 4) + ":" + text.substring(4, 6) + "\", ";
+                            uur = text.substring(0, 2) + ":" + text.substring(2, 4) + ":" + text.substring(4, 6);
+                            json += "{ \"uur\": \"" + uur + "\", ";
                             break;
                         case 2:
+                            lat = text.toFloat();
                             json += "\"lat\": \"" + text + "\", ";
                             break;
                         case 3:
                             json += "\"latChar\": \"" + text + "\", ";
                             break;
                         case 4:
+                            lon = text.toFloat();
                             json += "\"lon\": \"" + text + "\", ";
                             break;
                         case 5:
@@ -119,6 +114,10 @@ void sendGPSData() {
             if (count == 64) {
                 if (json != "") {
                     Serial.println(json);
+                    
+                    GPSSensor gpsSens(lon, lat, alt, 0);
+                    
+                    dumpSendResult(gpsSens);
                 }
                 break;
             }
@@ -130,16 +129,13 @@ void sendGPSData() {
     }
 }
 
-void clearBufferArray()
-{
-    for (int i = 0; i < count; i++)
-    {
+void clearBufferArray() {
+    for (int i = 0; i < count; i++) {
         buffer[i] = NULL;
     }
 }
 
-void handleInput()
-{
+void handleInput() {
     //Get the input string
     String input = Serial.readString();
 
@@ -308,7 +304,7 @@ void updateQueueStatus() {
 }
 
 void dumpSendResult(Sensor& sns){
-    bool sendResult = libTest.send(sns,true);
+    bool sendResult = libTest.send(sns, true);
 }
 
 void wakeUp() {
