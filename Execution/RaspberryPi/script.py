@@ -5,7 +5,7 @@ running = True;
 
 try:
     ser = serial.Serial('/dev/ttyUSB0', 9600)
-except SerialException:
+except:
     print "ttyUSB0 not found!"
 
 class Coordinates(object):
@@ -27,8 +27,8 @@ while running:
         
         print "data printed"
 
-    except SerialException:
-        running = False
-
     except ValueError:
         print "Error in code"
+    
+    except:
+        running = False
