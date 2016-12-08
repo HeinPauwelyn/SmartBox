@@ -61,4 +61,6 @@ $GPGGA,173246.000,8049.1272,N,10308.9925,E,1,10,0.98,-4.0,M,47.17,05,62,213,25,1
 
 Kaart met details over coördinaten:
 
+![image](https://cloud.githubusercontent.com/assets/16222780/20932683/cbb05f1e-bbd5-11e6-96af-7002c7fc28b9.png)
+
 ![image](https://cloud.githubusercontent.com/assets/16222780/20721479/2d8458ee-b663-11e6-819f-945a4de08301.png)

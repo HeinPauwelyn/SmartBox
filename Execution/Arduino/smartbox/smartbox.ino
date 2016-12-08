@@ -48,7 +48,7 @@ int count = 0;
 /* Sensoren                       */
 /**********************************/
 
-void sendSensor(String sensorSelect = "gps") {
+void sendSensor(String sensorSelect) {
     if (sensorSelect == "gps") {
         sendGPSData();
     }
@@ -65,15 +65,13 @@ void sendBatteryLevel() {
 void sendGPSData() {
     bool gotGPGGA = false;
     int teller = 0;
-    String text, json, uur;
-    float lon, lat, alt;
+    String text, json;
+    float lon, lat, alt, uur;
 
     if (SoftSerial.available()) {
 
         while (SoftSerial.available()) {
             char read = SoftSerial.read();
-
-            buffer[count++] = read;
 
             if (String(read) == ",") {
 
@@ -81,57 +79,55 @@ void sendGPSData() {
                     gotGPGGA = true;
                 }
 
+                // Serial.println("teller: " + String(teller) + " || gotGPGGA: " + String(gotGPGGA));
+
                 if (gotGPGGA) {
+
                     switch (teller) {
                         case 1:
-                            uur = text.substring(0, 2) + ":" + text.substring(2, 4) + ":" + text.substring(4, 6);
-                            json += "{ \"uur\": \"" + uur + "\", ";
+                            // uur = text.substring(0, 2) + ":" + text.substring(2, 4) + ":" + text.substring(4, 6);
+                            uur = text.toFloat();
                             break;
                         case 2:
-                            //lat = text.toFloat();
-                            json += "\"lat\": \"" + text + "\", ";
+                            lat = text.toFloat();
                             break;
                         case 3:
-                            json += "\"latChar\": \"" + text + "\", ";
+                            if (text == "S") {
+                                lat = -lat;
+                            }
+
+                            gpsSensor.setLatitude(lat);
                             break;
                         case 4:
-                            //lon = text.toFloat();
-                            json += "\"lon\": \"" + text + "\", ";
+                            lon = text.toFloat();
                             break;
                         case 5:
-                            json += "\"lonChar\": \"" + text + "\" }";
+                            if (text == "W") {
+                                lon = -lon;
+                            }
+
+                            gpsSensor.setLongitude(lon);
                             break;
                     }
 
                     teller += 1;
                 }
+                
                 text = "";
             }
             else {
                 text += read;
             }
 
-            if (count == 64) {
-                if (json != "") {
-                    Serial.println(json);
-                    
-                    GPSSensor gpsSens(lon, lat, alt, 0);
-                    
-                    dumpSendResult(gpsSens);
-                }
+            if (teller == 10) {
+                json = "{\"latitude\": " + String(lat) + ", \"longitude\": " + String(lon) + ", \"altidude\": 0, \"time\": " + uur + " }";
+                Serial.println(json);
+                GPSSensor gpsSens(lon, lat, alt, uur);
+                // dumpSendResult(gpsSens);
+                gotGPGGA = false;
                 break;
             }
         }
-
-        delay(2000);
-        clearBufferArray();
-        count = 0;
-    }
-}
-
-void clearBufferArray() {
-    for (int i = 0; i < count; i++) {
-        buffer[i] = NULL;
     }
 }
 
@@ -194,6 +190,8 @@ void loop() {
 
     if (connection) {
 
+        sendSensor("battery");
+
         if (!canSendFromQueue) {
             canSendFromQueue = libTest.performChecks(); 
             updateQueueStatus();
@@ -208,8 +206,8 @@ void loop() {
         if (sendGPS) {
             sendGPS = false;
 
-            sendGPSData();
-            sendSensor();
+            //sendEnCoSensor();
+            sendSensor("gps");
 
             ++sensorSelect %= 17;
 
@@ -223,7 +221,7 @@ void loop() {
         }
     }
 
-    delay(500);
+    //delay(500);
 }
 
 /**********************************/
@@ -317,4 +315,12 @@ void addMillis(unsigned long inc_millis) {
     cli();
     timer0_millis += inc_millis;
     SREG = oldSREG;
+}
+
+void sendEnCoSensor(){
+	debugSerial.println("Sending EnCo ....");
+	bool sendResult = libTest.sendSafe(enCoSensor);
+	debugSerial.print(F("Send succeeded : "));
+	debugSerial.println(sendResult ? "YES" : "NO");
+	debugSerial.println(F("--------------------------------------------"));
 }
