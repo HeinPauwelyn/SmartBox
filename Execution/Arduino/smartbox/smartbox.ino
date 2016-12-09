@@ -79,8 +79,6 @@ void sendGPSData() {
                     gotGPGGA = true;
                 }
 
-                // Serial.println("teller: " + String(teller) + " || gotGPGGA: " + String(gotGPGGA));
-
                 if (gotGPGGA) {
 
                     switch (teller) {
@@ -129,37 +127,6 @@ void sendGPSData() {
             }
         }
     }
-}
-
-void handleInput() {
-    //Get the input string
-    String input = Serial.readString();
-
-    //Remove any whitespace or CR/LF
-    input.trim();
-
-    //Echo the input
-    Serial.println("Command: " + input + " received");
-
-    //Process the input
-    if (input == "add")
-    {
-        Serial.println("Adding 1 to the value");
-        value++;
-    }
-    else if (input == "sub")
-    {
-        Serial.println("Subtracting 1 from the value");
-        value--;
-    }
-    else
-    {
-        Serial.println("Unknown command: " + input);
-    }
-
-    //Echo the changes
-    Serial.print("The current value is: ");
-    Serial.println(value);
 }
 
 /**********************************/
