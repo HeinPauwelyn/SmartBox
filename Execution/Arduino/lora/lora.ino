@@ -20,7 +20,6 @@
 
 #include <avr/wdt.h>
 #include <avr/sleep.h>
-#include <SoftwareSerial.h>
 
 #include "sensor.h"
 
@@ -34,28 +33,29 @@
 // PIN 2 => IRQ0 // 3 => IRQ1
 #define IRQ 0
 
-#define PIN_TX_RN2483 8
-#define PIN_RX_RN2483 9
-
 // Arduino's
 #if defined (__AVR_ATmega328P__)
-    // Serial setup to connect Modem
-    #define PIN_PWR_RN2483 12
+#include <SoftwareSerial.h>
+// Serial setup to connect Modem
+#define PIN_TX_RN2483 8
+#define PIN_RX_RN2483 9
+#define PIN_PWR_RN2483 12
 
-    #define PIN_Q_MT PD3
-    #define PIN_Q_FULL PD5
-    #define PIN_Q_IN_BETWEEN PD4
-    #define MODEM_SERIAL modemSerial
-    #elif defined (__AVR_ATmega1284P__)
-    // SODAQ Mbili
-    #define PIN_TX_RN2483 3
-    #define PIN_RX_RN2483 NULL
-    #define PIN_PWR_RN2483 23
+#define PIN_Q_MT PD3
+#define PIN_Q_FULL PD5
+#define PIN_Q_IN_BETWEEN PD4
+SoftwareSerial modemSerial(PIN_RX_RN2483, PIN_TX_RN2483);  // ARDUINO
+#define MODEM_SERIAL modemSerial
+#elif defined (__AVR_ATmega1284P__)
+// SODAQ Mbili
+#define PIN_TX_RN2483 3
+#define PIN_RX_RN2483 NULL
+#define PIN_PWR_RN2483 23
 
-    #define PIN_Q_MT 4
-    #define PIN_Q_FULL 20
-    #define PIN_Q_IN_BETWEEN 21
-    #define MODEM_SERIAL Serial1
+#define PIN_Q_MT 4
+#define PIN_Q_FULL 20
+#define PIN_Q_IN_BETWEEN 21
+#define MODEM_SERIAL Serial1
 #endif
 
 // Which modem ??
@@ -65,8 +65,6 @@ LoRaModemMicrochip modem(&MODEM_SERIAL, &debugSerial);
 //#include "LoRaModemMDot.h"
 //LoRaModemMDot modem(&MODEM_SERIAL, &debugSerial);
 
-
-SoftwareSerial modemSerial(PIN_RX_RN2483, PIN_TX_RN2483);  // ARDUINO
 Device libTest(&modem, &debugSerial);
 GPSSensor gpsSensor;
 EnCoSensor enCoSensor;
@@ -350,79 +348,9 @@ void sendAccelerometer() {// 8
   dumpSendResult(accSens);
 }
 void sendGPSSensor() {// 9
-    debugSerial.println("/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\ Sending GPSSensor data... /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\");
-  
-    bool gotGPGGA = false;
-    int teller = 0;
-    String text, json;
-    GPSSensor gpsSens;
-    float lon, lat, alt, uur;
-
-    if (SoftSerial.available()) {
-
-        while (SoftSerial.available()) {
-            char read = SoftSerial.read();
-
-            if (String(read) == ",") {
-
-                if (text == "$GPGGA") {
-                    gotGPGGA = true;
-                }
-
-                if (gotGPGGA) {
-
-                    switch (teller) {
-                        case 1:
-                            // uur = text.substring(0, 2) + ":" + text.substring(2, 4) + ":" + text.substring(4, 6);
-                            uur = text.toFloat();
-                            GPSSensor.setTimestamp(uur);
-                            break;
-                        case 2:
-                            lat = text.toFloat();
-                            break;
-                        case 3:
-                            if (text == "S") {
-                                lat = -lat;
-                            }
-
-                            gpsSensor.setLatitude(lat);
-                            break;
-                        case 4:
-                            lon = text.toFloat();
-                            break;
-                        case 5:
-                            if (text == "W") {
-                                lon = -lon;
-                            }
-
-                            gpsSensor.setLongitude(lon);
-                            break;
-                    }
-
-                    teller += 1;
-                }
-                
-                text = "";
-            }
-            else {
-                text += read;
-            }
-
-            if (teller == 10) {
-                //json = "{\"latitude\": " + String(lat) + ", \"longitude\": " + String(lon) + ", \"altidude\": 0, \"time\": " + uur + " }";
-                //Serial.println(json);
-                //bool sendResult = libTest.sendSafe(gpsSensor);
-                // GPSSensor gpsSens(lat, lon, alt, uur);
-                // dumpSendResult(gpsSens);
-                gotGPGGA = false;
-
-                //Serial.println(sendResult == true ? "Wel oke" : "Niet oke");
-                break;
-            }
-        }
-    }
-
-    dumpSendResult(gpsSens);
+  debugSerial.println("Sending GPSSensor data ....");
+  GPSSensor gpsSens(4.3, 51.222, 15.5, 0);
+  dumpSendResult(gpsSens);
 }
 void sendPressureSensor() {// 10
   debugSerial.println("Sending PressureSensor data ....");
