@@ -4,7 +4,7 @@ Smart box which make it possible to send "sensitive documents". We should be abl
 
 ## Hardware technologies
 
-- [x] [RaspberryPi][10]
+- [ ] [RaspberryPi][10]
 - [x] [Arduino][11]
 - [x] [LoRa][3]
 - [ ] [Estimote Beacons][2]
