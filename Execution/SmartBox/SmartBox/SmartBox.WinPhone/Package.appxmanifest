@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
 
-  <Identity Name="33164149-6cec-44c3-b495-782bf6d767a9"
+  <Identity Name="2e4c1fb1-0f98-4674-929a-9f908072dedf"
             Publisher="CN=hein_"
             Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="33164149-6cec-44c3-b495-782bf6d767a9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="2e4c1fb1-0f98-4674-929a-9f908072dedf" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>SmartBox.WinPhone</DisplayName>

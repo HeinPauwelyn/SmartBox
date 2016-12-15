@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{23DDF453-48A9-42D9-8C3E-1123622DDC40}</ProjectGuid>
+    <ProjectGuid>{27CCB529-7500-46AB-B463-C92FA15EEF26}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SmartBox.UWP</RootNamespace>
@@ -129,7 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SmartBox\SmartBox.csproj">
-      <Project>{eaaff30a-26fb-4980-825e-4cf672158336}</Project>
+      <Project>{11745295-18c7-456b-911b-1c8258376ef9}</Project>
       <Name>SmartBox</Name>
     </ProjectReference>
   </ItemGroup>
