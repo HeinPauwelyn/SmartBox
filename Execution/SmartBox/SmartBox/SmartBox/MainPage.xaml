@@ -15,10 +15,12 @@
                      HorizontalOptions="FillAndExpand"
                      Orientation="Vertical"
                      Spacing="15">
-            <Label Text="Enter a Phoneword:" />
-            <Entry x:Name="phoneNumberText" Text="1-855-XAMARIN" />
-            <Button x:Name="translateButon" Text="Translate" Clicked="OnTranslate" />
-            <Button x:Name="callButton" Text="Call" IsEnabled="false" Clicked="OnCall" />
+            <Button Text="Get GPS location"
+                    Clicked="GetGPS"/>
+            <Label Text="latitude"/>
+            <Label x:Name="lat"/>
+            <Label Text="longitude"/>
+            <Label x:Name="lng"/>
         </StackLayout>
     </ContentPage.Content>
 

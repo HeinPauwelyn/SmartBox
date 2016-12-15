@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Plugin.Geolocator;
+using Plugin.Geolocator.Abstractions;
+using SmartBox.Data;
+// using SmartBox.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,36 +13,25 @@ namespace SmartBox
 {
     public partial class MainPage : ContentPage
     {
-        string translatedNumber;
+        private ILocationData locationData = new FakeLocations();
+
+        //public List<Location> Locations { get; set; }
 
         public MainPage()
         {
             InitializeComponent();
+
         }
 
-        void OnTranslate(object sender, EventArgs e)
+        public async void GetGPS(object sender, EventArgs e)
         {
-            translatedNumber = PhonewordTranslator.ToNumber(phoneNumberText.Text);
-            if (!string.IsNullOrWhiteSpace(translatedNumber))
-            {
-                callButton.IsEnabled = true;
-                callButton.Text = "Call " + translatedNumber;
-            }
-            else
-            {
-                callButton.IsEnabled = false;
-                callButton.Text = "Call";
-            }
-        }
+            IGeolocator locator = CrossGeolocator.Current;
+            locator.DesiredAccuracy = 50;
 
-        async void OnCall(object sender, EventArgs e)
-        {
-            if (await this.DisplayAlert("Dial a Number", $"Would you like to call {translatedNumber}?", "Yes", "No"))
-            {
-                var dialer = DependencyService.Get<IDialer>();
-                if (dialer != null)
-                    dialer.Dial(translatedNumber);
-            }
+            Position position = await locator.GetPositionAsync(timeoutMilliseconds: 10000);
+
+            lng.Text = position.Longitude.ToString();
+            lat.Text = position.Latitude.ToString();
         }
     }
 }
