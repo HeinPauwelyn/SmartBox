@@ -111,23 +111,23 @@ void wakeUP_RN2483() {
 }
 
 void attemptModemConnection() {
-	byte cntWakeUp = 0;
-	while (!connection) {
-		wakeUP_RN2483(); // RN2483 specific -> see if we can move it into modem class itself
-		cntWakeUp++;
+    byte cntWakeUp = 0;
+    while (!connection) {
+        wakeUP_RN2483(); // RN2483 specific -> see if we can move it into modem class itself
+        cntWakeUp++;
 
-		if (libTest.connect(DEV_ADDR, APPSKEY, NWKSKEY, true)) {
-			debugSerial.println(F("Connection to the network was successful."));
-			connection = true;
-			modem.storeTimeOnAirBudget(30000);
-			pinMode(PIN_Q_FULL, OUTPUT);
-			digitalWrite(PIN_Q_FULL, LOW);
-			pinMode(PIN_Q_MT, OUTPUT);
-			digitalWrite(PIN_Q_MT, HIGH);
-			pinMode(PIN_Q_IN_BETWEEN, OUTPUT);
-			digitalWrite(PIN_Q_IN_BETWEEN, LOW);
-			break;
-		} 
+        if (libTest.connect(DEV_ADDR, APPSKEY, NWKSKEY, true)) {
+            debugSerial.println(F("Connection to the network was successful."));
+            connection = true;
+            modem.storeTimeOnAirBudget(30000);
+            pinMode(PIN_Q_FULL, OUTPUT);
+            digitalWrite(PIN_Q_FULL, LOW);
+            pinMode(PIN_Q_MT, OUTPUT);
+            digitalWrite(PIN_Q_MT, HIGH);
+            pinMode(PIN_Q_IN_BETWEEN, OUTPUT);
+            digitalWrite(PIN_Q_IN_BETWEEN, LOW);
+            break;
+        } 
         else {
             #ifdef PIN_PWR_RN2483
                 if (cntWakeUp > 3) {
@@ -144,10 +144,10 @@ void attemptModemConnection() {
             delay(5000);
 
             #ifdef PIN_PWR_RN2483
-			    }
+                }
             #endif
-		}
-	}
+        }
+    }
 }
 
 void setup() {
@@ -156,14 +156,14 @@ void setup() {
         digitalWrite(PIN_PWR_RN2483, HIGH);
     #endif
     SoftSerial.begin(SERIAL_BAUD);
-	debugSerial.begin(SERIAL_BAUD);
-	debugSerial.println("Starting .....");
-	MODEM_SERIAL.begin(modem.getDefaultBaudRate());
+    debugSerial.begin(SERIAL_BAUD);
+    debugSerial.println("Starting .....");
+    MODEM_SERIAL.begin(modem.getDefaultBaudRate());
 
-	attemptModemConnection();
+    attemptModemConnection();
 
-	// INT0
-	pinMode(2, INPUT_PULLUP);
+    // INT0
+    pinMode(2, INPUT_PULLUP);
 
     dumpModemParams();
     printInfo();
@@ -172,56 +172,56 @@ void setup() {
 
 // found at learn.adafruit.com/memories-of-an-arduino/measuring-free-memory
 int freeRam() {
-	extern int __heap_start, *__brkval;
-	int v;
-	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+    extern int __heap_start, *__brkval;
+    int v;
+    return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
 
 void updateQueueStatus() {
-	return;
+    return;
     // digitalWrite(PIN_Q_MT, LOW);
     // digitalWrite(PIN_Q_IN_BETWEEN, LOW);
     // digitalWrite(PIN_Q_FULL, LOW);
 
-	// if (libTest.sendQueueIsEmpty()) {
-	// 	digitalWrite(PIN_Q_MT, HIGH);
-	// 	digitalWrite(PIN_Q_IN_BETWEEN, LOW);
-	// 	digitalWrite(PIN_Q_FULL, LOW);
-	// } 
+    // if (libTest.sendQueueIsEmpty()) {
+    // 	digitalWrite(PIN_Q_MT, HIGH);
+    // 	digitalWrite(PIN_Q_IN_BETWEEN, LOW);
+    // 	digitalWrite(PIN_Q_FULL, LOW);
+    // } 
     // else if (libTest.sendQueueIsFull()) {
-	// 	digitalWrite(PIN_Q_FULL, HIGH);
-	// 	digitalWrite(PIN_Q_MT, LOW);
-	// 	digitalWrite(PIN_Q_IN_BETWEEN, LOW);
-	// }
+    // 	digitalWrite(PIN_Q_FULL, HIGH);
+    // 	digitalWrite(PIN_Q_MT, LOW);
+    // 	digitalWrite(PIN_Q_IN_BETWEEN, LOW);
+    // }
     // else {
     //     // digitalWrite(PIN_Q_MT, HIGH);
     //     // digitalWrite(PIN_Q_FULL, HIGH);
-	// 	digitalWrite(PIN_Q_IN_BETWEEN, HIGH);
-	// 	digitalWrite(PIN_Q_MT, LOW);
-	// 	digitalWrite(PIN_Q_FULL, LOW);
-	// }
+    // 	digitalWrite(PIN_Q_IN_BETWEEN, HIGH);
+    // 	digitalWrite(PIN_Q_MT, LOW);
+    // 	digitalWrite(PIN_Q_FULL, LOW);
+    // }
 }
 
 void sendGPSData() {
-	bool sendResult = false;
-	static float altitude = 8.15;
+    bool sendResult = false;
+    static float altitude = 8.15;
     // debugSerial.print(F("Spreading factor : "));
     // debugSerial.println(modem.getSpreadingFactor());
-	gpsSensor.setLongitude(4.35844212770462);
-	gpsSensor.setLatitude(50.86034364457187);
-	gpsSensor.setAltitude(altitude);
-	altitude += 3.75;
-	debugSerial.print(F("Sending GPS data : [lon : "));
-	debugSerial.print(gpsSensor.getLongitude());
-	debugSerial.print(F(" , lat : "));
-	debugSerial.print(gpsSensor.getLatitude());
-	debugSerial.print(F(" , alt : "));
-	debugSerial.print(gpsSensor.getAltitude());
-	debugSerial.println(F("]"));
-	sendResult = libTest.sendSafe(gpsSensor);
-	debugSerial.print(F("Send succeeded : "));
-	debugSerial.println(sendResult ? "YES" : "NO");
-	debugSerial.println(F("--------------------------------------------"));
+    gpsSensor.setLongitude(4.35844212770462);
+    gpsSensor.setLatitude(50.86034364457187);
+    gpsSensor.setAltitude(altitude);
+    altitude += 3.75;
+    debugSerial.print(F("Sending GPS data : [lon : "));
+    debugSerial.print(gpsSensor.getLongitude());
+    debugSerial.print(F(" , lat : "));
+    debugSerial.print(gpsSensor.getLatitude());
+    debugSerial.print(F(" , alt : "));
+    debugSerial.print(gpsSensor.getAltitude());
+    debugSerial.println(F("]"));
+    sendResult = libTest.sendSafe(gpsSensor);
+    debugSerial.print(F("Send succeeded : "));
+    debugSerial.println(sendResult ? "YES" : "NO");
+    debugSerial.println(F("--------------------------------------------"));
 }
 
 // void sendEnCoSensor(){
@@ -233,7 +233,7 @@ void sendGPSData() {
 // }
 
 void sendSensor(int sensorSelect = 9) {
-	switch (sensorSelect) {
+    switch (sensorSelect) {
         case 0:
             sendBoolSensor();
             break;
@@ -285,7 +285,7 @@ void sendSensor(int sensorSelect = 9) {
         case 16:
             sendBinaryDataSensor();
             break;
-	}
+    }
     dumpModemParams();
     printInfo();
     debugSerial.println(F("--------------------------------------------"));
@@ -298,8 +298,8 @@ void dumpSendResult(Sensor& sns){
 }
 
 void sendBoolSensor() {// 1
-	debugSerial.println("Sending BoolSensor data ....");
-	BinarySensor bSens(true);
+    debugSerial.println("Sending BoolSensor data ....");
+    BinarySensor bSens(true);
     dumpSendResult(bSens);
 }
 
@@ -474,53 +474,53 @@ void sloop() {
 
     sendSensor(8); // --> sendGSPSensor();
 
-	if (!canSendFromQueue) {
-		canSendFromQueue = libTest.performChecks();  /// ...
-		updateQueueStatus();
-	}
-	if (canSendFromQueue) {
-		debugSerial.println("Sending GPS from Queue ....");
-		libTest.processQueue();
-		canSendFromQueue = false;
-		updateQueueStatus();
-		return;
+    if (!canSendFromQueue) {
+        canSendFromQueue = libTest.performChecks();  /// ...
+        updateQueueStatus();
+    }
+    if (canSendFromQueue) {
+        debugSerial.println("Sending GPS from Queue ....");
+        libTest.processQueue();
+        canSendFromQueue = false;
+        updateQueueStatus();
+        return;
     } 
     // else {
     //     debugSerial.println("Nothing to send from Q ....");
-	// }
-	if (sendGPS) {
-		sendGPS = false;
-		// sendGPSData();
+    // }
+    if (sendGPS) {
+        sendGPS = false;
+        // sendGPSData();
         // sendEnCoSensor();
-		// sendSensor(11);
+        // sendSensor(11);
         // sendSensor(sensorSelect);
         // sensorSelect++;
         // sensorSelect %= 17;
-		updateQueueStatus();
-	} 
+        updateQueueStatus();
+    } 
     else {
-		if (++delayCnt >= 120) {
-			delayCnt = 0;
-			sendGPS = true;
-		}
+        if (++delayCnt >= 120) {
+            delayCnt = 0;
+            sendGPS = true;
+        }
         // debugSerial.println("Not sending new GPS data ....");
-	}
+    }
 }
 
 void wakeUp() {
-	// Disable external pin interrupt on wake up pin.
-	detachInterrupt(IRQ);
-	sendGPS = true;
+    // Disable external pin interrupt on wake up pin.
+    detachInterrupt(IRQ);
+    sendGPS = true;
 }
 
 extern volatile unsigned long timer0_millis;
 unsigned long new_value = 0;
 
 void addMillis(unsigned long inc_millis) {
-	uint8_t oldSREG = SREG;
-	cli();
-	timer0_millis += inc_millis;
-	SREG = oldSREG;
+    uint8_t oldSREG = SREG;
+    cli();
+    timer0_millis += inc_millis;
+    SREG = oldSREG;
 }
 
 void printInfo(){
@@ -541,9 +541,9 @@ void loop() {
 
     debugSerial.println("loop()");
 
-	if (connection) {
+    if (connection) {
         debugSerial.println("Connected");
-		sloop();
+        sloop();
         //printInfo();
     
         #if defined (__AVR_ATmega328P__)
@@ -565,32 +565,32 @@ void loop() {
         #else
             delay(1000);
         #endif
-	} 
+    } 
     else {
-		debugSerial.print(F("MODEM (4) : "));
-		debugSerial.println(modem.getParam(MODEM));
-		debugSerial.print(F("FREQ (1) : "));
-		debugSerial.println(modem.getParam(FREQUENCYBAND));
-		debugSerial.print(F("SF (6) : "));
-		debugSerial.println(modem.getParam(SP_FACTOR));
-		debugSerial.print(F("ADR (0) : "));
-		debugSerial.println(modem.getParam(ADR));
-		debugSerial.print(F("POW (11) : "));
-		debugSerial.println(modem.getParam(POWER_INDEX));
-		debugSerial.print(F("BW (1) : "));
-		debugSerial.println(modem.getParam(BANDWIDTH));
-		debugSerial.print(F("CR (0) : "));
-		debugSerial.println(modem.getParam(CODING_RATE));
-		debugSerial.print(F("DC (-1 / NA) : "));
-		debugSerial.println(modem.getParam(DUTY_CYCLE));
-		debugSerial.print(F("SNR (0) : "));
-		debugSerial.println(modem.getParam(SNR));
-		debugSerial.print(F("#GW (-1 / NA) : "));
-		debugSerial.println(modem.getParam(GATEWAY_COUNT));
-		debugSerial.print(F("#RETR (0) : "));
-		debugSerial.println(modem.getParam(RETRANSMISSION_COUNT));
-		debugSerial.print(F("DR (0) : "));
-		debugSerial.println(modem.getParam(DATA_RATE));
-		delay(120000);
-	}
+        debugSerial.print(F("MODEM (4) : "));
+        debugSerial.println(modem.getParam(MODEM));
+        debugSerial.print(F("FREQ (1) : "));
+        debugSerial.println(modem.getParam(FREQUENCYBAND));
+        debugSerial.print(F("SF (6) : "));
+        debugSerial.println(modem.getParam(SP_FACTOR));
+        debugSerial.print(F("ADR (0) : "));
+        debugSerial.println(modem.getParam(ADR));
+        debugSerial.print(F("POW (11) : "));
+        debugSerial.println(modem.getParam(POWER_INDEX));
+        debugSerial.print(F("BW (1) : "));
+        debugSerial.println(modem.getParam(BANDWIDTH));
+        debugSerial.print(F("CR (0) : "));
+        debugSerial.println(modem.getParam(CODING_RATE));
+        debugSerial.print(F("DC (-1 / NA) : "));
+        debugSerial.println(modem.getParam(DUTY_CYCLE));
+        debugSerial.print(F("SNR (0) : "));
+        debugSerial.println(modem.getParam(SNR));
+        debugSerial.print(F("#GW (-1 / NA) : "));
+        debugSerial.println(modem.getParam(GATEWAY_COUNT));
+        debugSerial.print(F("#RETR (0) : "));
+        debugSerial.println(modem.getParam(RETRANSMISSION_COUNT));
+        debugSerial.print(F("DR (0) : "));
+        debugSerial.println(modem.getParam(DATA_RATE));
+        delay(120000);
+    }
 }
