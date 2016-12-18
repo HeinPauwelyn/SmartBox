@@ -20,8 +20,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <Button Name="btnConnect" Content="Connect" Click="btnConnect_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button Name="btnDisconnect" Content="Disconnect" Click="btnDisconnect_Click" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <!--<Button Name="btnConnect" Content="Connect" Click="btnConnect_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button Name="btnDisconnect" Content="Disconnect" Click="btnDisconnect_Click" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
         <ComboBox Name="cboDevices"  Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" SelectionChanged="cboDevices_SelectionChanged"/>
         <TextBox Name="tbInput" Text="2" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
         <Button Name="btnSend" Content="Send" Click="btnSend_Click" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5"/>

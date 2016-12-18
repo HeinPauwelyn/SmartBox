@@ -27,7 +27,7 @@ void setup() {
  
 void loop() {
   // listen for serial data
-  if ( ss.available() > 0 ) {
+  if (ss.available() > 0 ) {
     // read a numbers from serial port
     int count = ss.parseInt();// print out the received number
     if (count > 0) {
@@ -37,9 +37,9 @@ void loop() {
       // blink the LED
       // blinkLED(count);
     }
-    else {
-      Serial.println("nope");
-    }
+    // else {
+    //   Serial.println("nope");
+    // }
   }
 }
  
