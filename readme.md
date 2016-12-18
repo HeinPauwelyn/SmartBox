@@ -5,12 +5,13 @@ Smart box which make it possible to send "sensitive documents". We should be abl
 ## Hardware technologies
 
 - [ ] [RaspberryPi][10]
-- [x] [Arduino][11]
+- [x] [Arduino][11] _([SODAQ Mbili board][12])_
 - [x] [LoRa][3]
 - [ ] [Estimote Beacons][2]
 - [ ] [KNX][1]
 - [ ] [OPC][4]
-- [ ] Own proposals?
+- [x] Bluetooth
+- [x] GPS
 - [ ] ...
 
 ## Software technologies
@@ -23,7 +24,8 @@ Smart box which make it possible to send "sensitive documents". We should be abl
   - [ ] [Node.JS][8]
   - [x] PHP
 - Mobile App
-  - [x] [Xamarin][9]
+  - [ ] [Xamarin][9]
+  - [x] Windows 10 applicatie
 
 [1]: https://www.knx.org/knx-en/index.php
 [2]: http://estimote.com/
@@ -36,3 +38,4 @@ Smart box which make it possible to send "sensitive documents". We should be abl
 [9]: https://www.xamarin.com/
 [10]: https://www.raspberrypi.org/ 
 [11]: https://www.arduino.cc/
+[12]: http://support.sodaq.com/sodaq-one/
