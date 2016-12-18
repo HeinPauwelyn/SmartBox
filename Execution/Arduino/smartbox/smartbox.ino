@@ -50,7 +50,8 @@ LoRaModemMicrochip modem(&MODEM_SERIAL, &debugSerial);
 //#include "LoRaModemMDot.h"
 //LoRaModemMDot modem(&MODEM_SERIAL, &debugSerial);
 
-SoftwareSerial SoftSerial(4, 5);
+SoftwareSerial bluetoothSoftSerial(20, 21);
+SoftwareSerial gpsSoftSerial(4, 5);
 SoftwareSerial modemSerial(PIN_RX_RN2483, PIN_TX_RN2483);  // ARDUINO
 Device libTest(&modem, &debugSerial);
 GPSSensor gpsSensor;
@@ -155,7 +156,9 @@ void setup() {
         pinMode(PIN_PWR_RN2483, OUTPUT);
         digitalWrite(PIN_PWR_RN2483, HIGH);
     #endif
-    SoftSerial.begin(SERIAL_BAUD);
+
+    bluetoothSoftSerial.begin(SERIAL_BAUD);
+    gpsSoftSerial.begin(SERIAL_BAUD);
     debugSerial.begin(SERIAL_BAUD);
     debugSerial.println("Starting .....");
     MODEM_SERIAL.begin(modem.getDefaultBaudRate());
@@ -354,10 +357,10 @@ void sendGPSSensor() {// 9
     GPSSensor gpsSens;
     float lon, lat, alt, uur;
 
-    if (SoftSerial.available()) {
-        while (SoftSerial.available()) {
+    if (gpsSoftSerial.available()) {
+        while (gpsSoftSerial.available()) {
 
-            char read = SoftSerial.read();
+            char read = gpsSoftSerial.read();
 
             if (String(read) == ",") {
 
@@ -540,6 +543,7 @@ void printInfo(){
 void loop() {
 
     debugSerial.println("loop()");
+    bluetootLoop();
 
     if (connection) {
         debugSerial.println("Connected");
@@ -592,5 +596,20 @@ void loop() {
         debugSerial.print(F("DR (0) : "));
         debugSerial.println(modem.getParam(DATA_RATE));
         delay(120000);
+    }
+}
+
+void bluetootLoop() {
+    if (bluetoothSoftSerial.available() > 0 ) {
+        // read a numbers from serial port
+        int count = bluetoothSoftSerial.parseInt();// print out the received number
+        
+        if (count > 0) {
+            Serial.print("You have input: ");
+            Serial.println(String(count));
+        }
+        // else {
+        //   Serial.println("nope");
+        // }
     }
 }
