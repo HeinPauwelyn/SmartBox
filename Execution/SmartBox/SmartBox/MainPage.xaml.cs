@@ -42,7 +42,6 @@ namespace SmartBox
             }
         }
 
-
         private async void btnConnect_Click(object sender, RoutedEventArgs e)
         {
             await Connect();
