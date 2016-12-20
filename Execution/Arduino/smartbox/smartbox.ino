@@ -137,6 +137,8 @@ void attemptModemConnection() {
                     delay(2500);
                     digitalWrite(PIN_PWR_RN2483, HIGH);
                     delay(2500);
+
+                    bluetoothLoop();
                 } 
                 else {
             #endif
@@ -349,19 +351,28 @@ void sendAccelerometer() {// 8
 }
 
 void sendGPSSensor() {// 9
-    debugSerial.println("/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\ Sending GPSSensor data... /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\");
-  
+      
     bool gotGPGGA = false;
     int teller = 0;
     String text, json;
-    GPSSensor gpsSens;
-    float lon, lat, alt, uur;
+    // GPSSensor gpsSens;
+    float lon, lat, alt;
+    long uur;
+    debugSerial.println("/\\ check gpsSoftSerial.available() = " + String(gpsSoftSerial.available()) + " /\\");
+
+    if(!gpsSoftSerial.available()) {
+        gpsSoftSerial.begin(SERIAL_BAUD);
+    }
 
     if (gpsSoftSerial.available()) {
+        
+        debugSerial.println("/\\ reading GPSSensor data... /\\");
+        
         while (gpsSoftSerial.available()) {
-
+        // while(teller < 20) {
             char read = gpsSoftSerial.read();
 
+            // Serial.print(read);
             if (String(read) == ",") {
 
                 if (text == "$GPGGA") {
@@ -369,11 +380,12 @@ void sendGPSSensor() {// 9
                 }
 
                 if (gotGPGGA) {
-
+                  
                     switch (teller) {
                         case 1:
                             // uur = text.substring(0, 2) + ":" + text.substring(2, 4) + ":" + text.substring(4, 6);
-                            uur = text.toFloat();
+                            uur = text.toInt();
+                            Serial.print("uur: " + String(uur));
                             // GPSSensor.setTimestamp(uur);
                             break;
                         case 2:
@@ -384,6 +396,7 @@ void sendGPSSensor() {// 9
                                 lat = -lat;
                             }
 
+                            Serial.print(" lat: " + String(lat));
                             gpsSensor.setLatitude(lat);
                             break;
                         case 4:
@@ -394,6 +407,7 @@ void sendGPSSensor() {// 9
                                 lon = -lon;
                             }
 
+                            Serial.print(" lon: " + String(lon));
                             gpsSensor.setLongitude(lon);
                             break;
                     }
@@ -406,13 +420,15 @@ void sendGPSSensor() {// 9
             else {
                 text += read;
             }
-
+            
             if (teller == 10) {
-                //json = "{\"latitude\": " + String(lat) + ", \"longitude\": " + String(lon) + ", \"altidude\": 0, \"time\": " + uur + " }";
-                //Serial.println(json);
-                //bool sendResult = libTest.sendSafe(gpsSensor);
-                // GPSSensor gpsSens(lat, lon, alt, uur);
-                // dumpSendResult(gpsSens);
+                // Serial.println("");
+                json = "{\"latitude\": " + String(lat) + ", \"longitude\": " + String(lon) + ", \"altidude\": 0, \"timestamp\": " + uur + " }";
+                Serial.println(json);
+                // bool sendResult = libTest.sendSafe(gpsSensor);
+                debugSerial.println("/\\ sending GPSSensor data... /\\");
+                GPSSensor gpsSens(lat, lon, alt, uur);
+                dumpSendResult(gpsSens);
                 gotGPGGA = false;
 
                 //Serial.println(sendResult == true ? "Wel oke" : "Niet oke");
@@ -421,7 +437,8 @@ void sendGPSSensor() {// 9
         }
     }
 
-    dumpSendResult(gpsSens);
+    Serial.println("");
+    // dumpSendResult(gpsSens);
 }
 
 void sendPressureSensor() {// 10
@@ -450,7 +467,7 @@ void sendAirQualitySensor() {// 13
 
 void sendBatteryLevel() {// 14 
     debugSerial.println("Sending BatteryLevel data ....");
-    BatteryLevel iSens(666);
+    BatteryLevel iSens(random(0, 700));
     dumpSendResult(iSens);
 }
 
@@ -475,7 +492,9 @@ void sendBinaryDataSensor() {// 17
 void sloop() {
     // debugSerial.println("Looping ....");
 
-    sendSensor(8); // --> sendGSPSensor();
+    Serial.println("sendGPSSensor();");
+    sendSensor(8);
+    sendSensor(13);
 
     if (!canSendFromQueue) {
         canSendFromQueue = libTest.performChecks();  /// ...
@@ -491,8 +510,10 @@ void sloop() {
     // else {
     //     debugSerial.println("Nothing to send from Q ....");
     // }
+
+    Serial.println("sendGPS: " + String(sendGPS));
     if (sendGPS) {
-        sendGPS = false;
+        // sendGPS = false;
         // sendGPSData();
         // sendEnCoSensor();
         // sendSensor(11);
@@ -543,7 +564,7 @@ void printInfo(){
 void loop() {
 
     debugSerial.println("loop()");
-    bluetootLoop();
+    bluetoothLoop();
 
     if (connection) {
         debugSerial.println("Connected");
@@ -599,17 +620,29 @@ void loop() {
     }
 }
 
-void bluetootLoop() {
-    if (bluetoothSoftSerial.available() > 0 ) {
-        // read a numbers from serial port
-        int count = bluetoothSoftSerial.parseInt();// print out the received number
-        
-        if (count > 0) {
-            Serial.print("You have input: ");
-            Serial.println(String(count));
+void bluetoothLoop() {
+
+    int counter = -100;
+    while (counter++ <= 100) {
+
+        Serial.println("Bluetooth");
+
+        if  (!bluetoothSoftSerial.available()) {
+
+            bluetoothSoftSerial.begin(SERIAL_BAUD);
         }
-        // else {
-        //   Serial.println("nope");
-        // }
+        if (bluetoothSoftSerial.available()) {
+            Serial.println("\\/ Bluetooth \\/");
+            // read a numbers from serial port
+            int count = bluetoothSoftSerial.parseInt();// print out the received number
+            
+            if (count > 0) {
+                Serial.print("You have input: ");
+                Serial.println(String(count));
+            }
+            // else {
+            //   Serial.println("nope");
+            // }
+        }
     }
 }

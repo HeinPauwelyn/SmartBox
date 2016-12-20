@@ -25,7 +25,7 @@ namespace SmartBox.Helpers
             Devices = await DeviceInformation.FindAllAsync(RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort));
         }
 
-        public async Task<bool> Connect(string deviceName)
+        public async Task<string> Connect(string deviceName)
         {
             try
             {
@@ -36,11 +36,11 @@ namespace SmartBox.Helpers
 
                 await _socket.ConnectAsync(_service.ConnectionHostName, _service.ConnectionServiceName, SocketProtectionLevel.BluetoothEncryptionAllowNullAuthentication);
 
-                return true;
+                return "";
             }
             catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
         }
 

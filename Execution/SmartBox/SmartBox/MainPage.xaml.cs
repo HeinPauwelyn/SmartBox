@@ -50,13 +50,20 @@ namespace SmartBox
 
         private async Task Connect()
         {
-            if (await _bluetooth.Connect(cboDevices.SelectedItem.ToString()))
+            if (cboDevices.SelectedItem == null)
+            {
+                tbError.Text = "Select a device";
+                return;
+            }
+
+            string mss = await _bluetooth.Connect(cboDevices.SelectedItem.ToString());
+            if (mss == "")
             {
                 tbError.Text = "Connected";
             }
             else
             {
-                tbError.Text = "Error while connecting";
+                tbError.Text = mss;
             }
         }
 
