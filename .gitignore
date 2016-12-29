@@ -1,3 +1,5 @@
+Web.config
+
 ########################
 # Microsoft Office     #
 ########################
@@ -442,3 +444,5 @@ paket-files/
 # Other                #
 ########################
 Execution/database/insert statements.sql
+Execution/SmartBox/SmartBox.WebApp/Web.Debug.config
+Execution/SmartBox/SmartBox.WebApp/Web.Release.config
