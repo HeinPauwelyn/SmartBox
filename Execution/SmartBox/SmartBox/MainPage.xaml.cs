@@ -1,4 +1,6 @@
 ﻿using SmartBox.Helpers;
+using SmartBox.Models;
+using SmartBox.Repositories;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ namespace SmartBox
     public sealed partial class MainPage : Page
     {
         private Bluetooth _bluetooth;
+        private LocationRepo _locationRepo;
 
         public MainPage()
         {
@@ -21,14 +24,27 @@ namespace SmartBox
             Loaded += MainPage_Loaded;
         }
 
-        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             // btnDisconnect.IsEnabled = false;
             _bluetooth = new Bluetooth();
+            _locationRepo = new LocationRepo();
 
-            foreach (DeviceInformation device in _bluetooth.Devices)
+            if (_bluetooth.Devices != null)
             {
-                cboDevices.Items.Add(device.Name);
+                foreach (DeviceInformation device in _bluetooth.Devices)
+                {
+                    cboDevices.Items.Add(device.Name);
+                }
+            }
+            else
+            {
+                tbError.Text = "enable bluetooth";
+            }
+
+            foreach (Location loc in await _locationRepo.GetLocations())
+            {
+                lsbLocations.Items.Add(loc);
             }
         }
 

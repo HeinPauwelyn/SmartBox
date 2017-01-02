@@ -353,92 +353,93 @@ void sendAccelerometer() {// 8
 void sendGPSSensor() {// 9
 
     debugSerial.println("Sending GPSSensor data ....");  
-    GPSSensor gpsSens(random(-180, 180), random(-90, 90), 15.5, 0);
-    dumpSendResult(gpsSens);
-    // bool gotGPGGA = false;
-    // int teller = 0;
-    // String text, json;
-    // // GPSSensor gpsSens;
-    // float lon, lat, alt;
-    // long uur;
-    // debugSerial.println("/\\ check gpsSoftSerial.available() = " + String(gpsSoftSerial.available()) + " /\\");
+    // GPSSensor gpsSens(random(-180, 180), random(-90, 90), 15.5, 0);
+    // dumpSendResult(gpsSens);
 
-    // if(!gpsSoftSerial.available()) {
-    //     gpsSoftSerial.begin(SERIAL_BAUD);
-    // }
+    bool gotGPGGA = false;
+    int teller = 0;
+    String text, json;
+    // GPSSensor gpsSens;
+    float lon, lat, alt;
+    long uur;
+    debugSerial.println("/\\ check gpsSoftSerial.available() = " + String(gpsSoftSerial.available()) + " /\\");
 
-    // if (gpsSoftSerial.available()) {
+    if(!gpsSoftSerial.available()) {
+        gpsSoftSerial.begin(SERIAL_BAUD);
+    }
+
+    if (gpsSoftSerial.available()) {
         
-    //     debugSerial.println("/\\ reading GPSSensor data... /\\");
+        debugSerial.println("/\\ reading GPSSensor data... /\\");
         
-    //     while (gpsSoftSerial.available()) {
-    //     // while(teller < 20) {
-    //         char read = gpsSoftSerial.read();
+        while (gpsSoftSerial.available()) {
+        // while(teller < 20) {
+            char read = gpsSoftSerial.read();
 
-    //         // Serial.print(read);
-    //         if (String(read) == ",") {
+            // Serial.print(read);
+            if (String(read) == ",") {
 
-    //             if (text == "$GPGGA") {
-    //                 gotGPGGA = true;
-    //             }
+                if (text == "$GPGGA") {
+                    gotGPGGA = true;
+                }
 
-    //             if (gotGPGGA) {
+                if (gotGPGGA) {
                   
-    //                 switch (teller) {
-    //                     case 1:
-    //                         // uur = text.substring(0, 2) + ":" + text.substring(2, 4) + ":" + text.substring(4, 6);
-    //                         uur = text.toInt();
-    //                         Serial.print("uur: " + String(uur));
-    //                         // GPSSensor.setTimestamp(uur);
-    //                         break;
-    //                     case 2:
-    //                         lat = text.toFloat();
-    //                         break;
-    //                     case 3:
-    //                         if (text == "S") {
-    //                             lat = -lat;
-    //                         }
+                    switch (teller) {
+                        case 1:
+                            // uur = text.substring(0, 2) + ":" + text.substring(2, 4) + ":" + text.substring(4, 6);
+                            uur = text.toInt();
+                            Serial.print("uur: " + String(uur));
+                            // GPSSensor.setTimestamp(uur);
+                            break;
+                        case 2:
+                            lat = text.toFloat();
+                            break;
+                        case 3:
+                            if (text == "S") {
+                                lat = -lat;
+                            }
 
-    //                         Serial.print(" lat: " + String(lat));
-    //                         gpsSensor.setLatitude(lat);
-    //                         break;
-    //                     case 4:
-    //                         lon = text.toFloat();
-    //                         break;
-    //                     case 5:
-    //                         if (text == "W") {
-    //                             lon = -lon;
-    //                         }
+                            Serial.print(" lat: " + String(lat));
+                            gpsSensor.setLatitude(lat);
+                            break;
+                        case 4:
+                            lon = text.toFloat();
+                            break;
+                        case 5:
+                            if (text == "W") {
+                                lon = -lon;
+                            }
 
-    //                         Serial.print(" lon: " + String(lon));
-    //                         gpsSensor.setLongitude(lon);
-    //                         break;
-    //                 }
+                            Serial.print(" lon: " + String(lon));
+                            gpsSensor.setLongitude(lon);
+                            break;
+                    }
 
-    //                 teller += 1;
-    //             }
+                    teller += 1;
+                }
                 
-    //             text = "";
-    //         }
-    //         else {
-    //             text += read;
-    //         }
+                text = "";
+            }
+            else {
+                text += read;
+            }
             
-    //         if (teller == 10) {
-    //             // Serial.println("");
-    //             json = "{\"latitude\": " + String(lat) + ", \"longitude\": " + String(lon) + ", \"altidude\": 0, \"timestamp\": " + uur + " }";
-    //             Serial.println(json);
-    //             // bool sendResult = libTest.sendSafe(gpsSensor);
-    //             debugSerial.println("/\\ sending GPSSensor data... /\\");
-    //             GPSSensor gpsSens(lat, lon, alt, uur);
-    //             dumpSendResult(gpsSens);
-    //             gotGPGGA = false;
+            if (teller == 10) {
+                // Serial.println("");
+                json = "{\"latitude\": " + String(lat) + ", \"longitude\": " + String(lon) + ", \"altidude\": 0, \"timestamp\": " + uur + " }";
+                Serial.println(json);
+                // bool sendResult = libTest.sendSafe(gpsSensor);
+                debugSerial.println("/\\ sending GPSSensor data... /\\");
+                GPSSensor gpsSens(lat, lon, alt, uur);
+                dumpSendResult(gpsSens);
+                gotGPGGA = false;
 
-    //             //Serial.println(sendResult == true ? "Wel oke" : "Niet oke");
-    //             break;
-    //         }
-    //     }
-    // }
+                //Serial.println(sendResult == true ? "Wel oke" : "Niet oke");
+                break;
+            }
+        }
+    }
 
     // Serial.println("");
     // dumpSendResult(gpsSens);
