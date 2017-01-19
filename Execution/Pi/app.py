@@ -23,7 +23,7 @@ while running:
             # print(coor.timestamp + "," + str(coor.latitude) + "," + str(coor.longitude) + "\r\n")
             
             req = urllib2.Request('http://192.168.0.187:3000/locations/add')
-            req.add_header('Content-Type': 'application/json')
+            req.add_header('Content-Type', 'application/json')
             
             response = urllib2.urlopen(req, text)
             print (response)
