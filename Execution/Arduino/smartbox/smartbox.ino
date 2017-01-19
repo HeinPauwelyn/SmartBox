@@ -93,7 +93,7 @@ void readGPSData()
             }
             
             if (teller == 10) {
-                json = "{\"latitude\": " + String(lat) + ", \"longitude\": " + String(lon) + ", \"altidude\": 0, \"timestamp\": " + uur + " }";
+                json = "{\"latitude\": " + String(lat) + ", \"longitude\": " + String(lon) + ", \"altidude\": 0, \"timestamp\": \"" + uur + "\" }";
                 Serial.println(json);
                 
                 gotGPGGA = false;

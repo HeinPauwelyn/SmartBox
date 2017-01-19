@@ -6,12 +6,18 @@
 	"tasks": [
 		{
 			"taskName": "--verify",
-			"args": ["-v", "${file}"],
+			"args": [
+				"-v",
+				"${file}"
+			],
 			"isBuildCommand": true,
 			"showOutput": "silent",
 			"problemMatcher": {
 				"owner": "external",
-				"fileLocation": ["relative", "${fileDirname}"],
+				"fileLocation": [
+					"relative",
+					"${fileDirname}"
+				],
 				"pattern": {
 					"regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
 					"file": 1,
@@ -24,9 +30,12 @@
 		},
 		{
 			"taskName": "--upload",
-			"args": ["-v", "${file}"],
+			"args": [
+				"-v",
+				"${file}"
+			],
 			"isTestCommand": true,
 			"showOutput": "always"
-		}	
+		}
 	]
 }
