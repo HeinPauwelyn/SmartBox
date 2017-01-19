@@ -29,8 +29,21 @@ app.get('/locations/all', (req, res, next) => {
 app.post('/locations/add', (req, res, next) => {
 
     let f = () => {
-        new sql.Request().query('insert into Locations() values ()')
-    }
+        new sql.Request().input('Latitude', sql.NVarChar, req.body.latitude)
+            .input('Longitude', sql.NVarChar, req.body.longitude)
+            .input('Altitude', sql.NVarChar, req.body.altitude)
+            .input('Time', sql.NVarChar, req.body.time)
+            .input('IsOpen', sql.NVarChar, req.body.isopen)
+            .execute('insertLocation')
+            .then((resordSet) => {
+                res.json({ message: 'The row is append to the table' })
+            })
+            .catch((err) => {
+                next(err);
+            });
+    };
+
+    connect(f, next);
 });
 
 app.listen(3000, () => {
