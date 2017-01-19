@@ -6,7 +6,7 @@ running = True;
 try:
     ser = serial.Serial('/dev/ttyUSB0', 9600)
 except SerialException:
-    print "ttyUSB0 not found!"
+    print("ttyUSB0 not found!")
 
 class Coordinates(object):
 
@@ -22,9 +22,7 @@ while running:
         # print "lat: " + str(coor.lat) + str(coor.latChar)
         # print "lon: " + str(coor.lon) + str(coor.lonChar)
 
-        print coor.uur + "," + str(coor.lat) + coor.latChar + "," + coor.lon + coor.lonChar + "\r\n"
+        print(coor.uur + "," + str(coor.lat) + coor.latChar + "," + coor.lon + coor.lonChar + "\r\n")
 
     except SerialException:
         running = False
-
-    except ValueError:
