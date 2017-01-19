@@ -1,7 +1,7 @@
 import serial
 import json
 
-running = True;
+running = True
 
 try:
     ser = serial.Serial('/dev/ttyUSB0', 9600)
@@ -16,13 +16,11 @@ class Coordinates(object):
 while running:
     try:
         text = ser.readline()
-        coor = Coordinates(text)
-        
-        # print "uur: " + str(coor.uur)
-        # print "lat: " + str(coor.lat) + str(coor.latChar)
-        # print "lon: " + str(coor.lon) + str(coor.lonChar)
+        if type(text) == str:
+            print (text)
+            coor = Coordinates(text)
+            print(coor.timestamp + "," + str(coor.latitude) + "," + str(coor.longitude) + "\r\n")
 
-        print(coor.uur + "," + str(coor.lat) + coor.latChar + "," + coor.lon + coor.lonChar + "\r\n")
-
-    except SerialException:
-        running = False
+    except Exception as ex:
+        print (format(ex))
+        running = True
