@@ -1,9 +1,12 @@
 const express = require('express'),
     app = express(),
-    sql = require('mssql');
+    sql = require('mssql'),
+    config = require('./config');
 
-let connect = (f) => {
-    sql.connect()
+let connect = (f, next) => {
+    sql.connect(config.database.connectionstring).then(f).catch((err) => {
+        next(err);
+    });
 };
 
 app.get('/', (req, res, next) => {
@@ -11,7 +14,23 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/locations/all', (req, res, next) => {
-    res.json({ data: 'some data' });
+
+    let f = () => {
+        new sql.Request().query('select * from Locations').then((recordSet) => {
+            res.json(recordSet);
+        }).catch((err) => {
+            next(err);
+        });
+    };
+
+    connect(f, next);
+});
+
+app.post('/locations/add', (req, res, next) => {
+
+    let f = () => {
+        new sql.Request().query('insert into Locations() values ()')
+    }
 });
 
 app.listen(3000, () => {
