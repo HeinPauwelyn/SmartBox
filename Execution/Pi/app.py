@@ -17,8 +17,10 @@ while running:
     try:
         text = ser.readline()
         if type(text) == str:
+            print (text)
             coor = Coordinates(text)
-            print(text)
+            print(coor.timestamp + "," + str(coor.latitude) + "," + str(coor.longitude) + "\r\n")
 
-    except SerialException:
-        running = False
+    except Exception as ex:
+        print (format(ex))
+        running = True
