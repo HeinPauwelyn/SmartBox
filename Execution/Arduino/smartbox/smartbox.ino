@@ -1,4 +1,4 @@
-#include <SoftwareSerial.h>
+#include <../SoftwareSerial.h>
 int SERIAL_BAUD = 9600;
 
 SoftwareSerial GPSSoftSerial(4, 5);

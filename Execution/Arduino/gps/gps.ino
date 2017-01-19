@@ -1,4 +1,4 @@
-#include <SoftwareSerial.h>
+#include <../SoftwareSerial.h>
  
 SoftwareSerial SoftSerial(4, 5);
 unsigned char buffer[64];                   // buffer array for data receive over serial port

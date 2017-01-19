@@ -1,4 +1,4 @@
-#include <SoftwareSerial.h>
+#include <../SoftwareSerial.h>
 // int ledPin = 13;
  
 /* This sample code demonstrates the normal use of reading Bluetooth serial port.
