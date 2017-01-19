@@ -2,6 +2,11 @@ Web.config
 Migrations
 
 ########################
+# Node.JS              #
+########################
+**/node_modules
+
+########################
 # Microsoft Office     #
 ########################
 *.tmp
@@ -158,13 +163,6 @@ ENV/
 
 # Rope project settings
 .ropeproject
-
-########################
-# Xamarin studio       #
-########################
-bin/
-obj/
-*.userprefs
 
 ########################
 # Visual Studio        #

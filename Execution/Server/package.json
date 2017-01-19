@@ -1,0 +1,25 @@
+{
+  "name": "smartbox.server",
+  "version": "0.0.0",
+  "description": "This is the server of my smartbox",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HeinPauwelyn/SmartBox.git"
+  },
+  "keywords": [
+    "smartbox"
+  ],
+  "author": "Hein Pauwelyn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HeinPauwelyn/SmartBox/issues"
+  },
+  "homepage": "https://github.com/HeinPauwelyn/SmartBox#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
