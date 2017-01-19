@@ -1,4 +1,4 @@
-package domotica.smartbox;
+package sbd.smartbox;
 
 import org.junit.Test;
 

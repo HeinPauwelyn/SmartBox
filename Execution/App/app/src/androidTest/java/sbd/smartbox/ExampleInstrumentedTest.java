@@ -1,4 +1,4 @@
-package domotica.smartbox;
+package sbd.smartbox;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("domotica.smartbox", appContext.getPackageName());
+        assertEquals("sbd.smartbox", appContext.getPackageName());
     }
 }
