@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/HeinPauwelyn/SmartBox#readme",
   "dependencies": {
+    "body-parser": "^1.16.0",
     "express": "^4.14.0",
     "mssql": "^3.3.0"
   }

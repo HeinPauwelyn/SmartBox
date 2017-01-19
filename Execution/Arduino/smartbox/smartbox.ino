@@ -1,4 +1,4 @@
-#include <../SoftwareSerial.h>
+#include <SoftwareSerial.h>
 int SERIAL_BAUD = 9600;
 
 SoftwareSerial GPSSoftSerial(4, 5);
@@ -10,16 +10,6 @@ void setup ()
 {
     GPSSoftSerial.begin(SERIAL_BAUD);
     Serial.begin(SERIAL_BAUD); 
-}
-
-void loop()
-{
-    if (loopCounter++ == 100) 
-    {
-        loopCounter = 0;
-        
-        readGPSData();
-    }
 }
 
 void readGPSData()
@@ -93,7 +83,7 @@ void readGPSData()
             }
             
             if (teller == 10) {
-                json = "{\"latitude\": " + String(lat) + ", \"longitude\": " + String(lon) + ", \"altidude\": 0, \"timestamp\": \"" + uur + "\" }";
+                json = "{\"latitude\": " + String(lat) + ", \"longitude\": " + String(lon) + ", \"altitude\": 0, \"timestamp\": \"" + uur + "\" }";
                 Serial.println(json);
                 
                 gotGPGGA = false;
@@ -101,7 +91,14 @@ void readGPSData()
             }
         }
     }
+}
 
-    // Serial.println("");
-    // dumpSendResult(gpsSens);
+void loop()
+{
+    if (loopCounter++ == 100) 
+    {
+        loopCounter = 0;
+        
+        readGPSData();
+    }
 }

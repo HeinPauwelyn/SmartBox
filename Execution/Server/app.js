@@ -1,7 +1,11 @@
 const express = require('express'),
     app = express(),
     sql = require('mssql'),
-    config = require('./config');
+    config = require('./config'),
+    bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ type: 'application/json' }));
 
 let connect = (f, next) => {
     sql.connect(config.database.connectionstring).then(f).catch((err) => {
@@ -32,7 +36,7 @@ app.post('/locations/add', (req, res, next) => {
         new sql.Request().input('Latitude', sql.NVarChar, req.body.latitude)
             .input('Longitude', sql.NVarChar, req.body.longitude)
             .input('Altitude', sql.NVarChar, req.body.altitude)
-            .input('Time', sql.NVarChar, req.body.time)
+            .input('Time', sql.NVarChar, req.body.timestamp)
             .input('IsOpen', sql.NVarChar, req.body.isopen)
             .execute('insertLocation')
             .then((resordSet) => {
