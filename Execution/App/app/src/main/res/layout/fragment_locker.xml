@@ -4,10 +4,16 @@
     android:layout_height="match_parent"
     tools:context="sbd.smartbox.LockerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:text="@string/open_or_close_smartbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:id="@+id/btnopen"/>
 
 </FrameLayout>

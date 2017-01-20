@@ -28,7 +28,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     @Override
     public void onBindViewHolder(final LocationViewHolder holder, final int position) {
 
-        if (_locations.size() < 21) {
+        if (_locations != null) {
             Location l = _locations.get(position);
             holder.longitude.setText(l.getLongitude());
             holder.latitude.setText(l.getLatitude());
@@ -38,7 +38,10 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
     @Override
     public int getItemCount() {
-        return 21;
+        if (_locations != null) {
+            return _locations.size();
+        }
+        return 0;
     }
 
     public class LocationViewHolder extends RecyclerView.ViewHolder {

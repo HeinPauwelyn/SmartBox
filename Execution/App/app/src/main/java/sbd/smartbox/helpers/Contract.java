@@ -5,5 +5,5 @@ package sbd.smartbox.helpers;
  */
 
 public class Contract {
-    public static String SMARTBOX_BASE_URL = "http://192.168.0.187:3000/";
+    public static String SMARTBOX_BASE_URL = "http://172.30.248.64:3000/";
 }
